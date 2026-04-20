@@ -44,19 +44,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 // Health check
-app.get('/api/health', (req, res) => {
+app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString(), service: 'BioPaddy API' });
 });
 
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/farmers', farmerRoutes);
-app.use('/api/customers', customerRoutes); // NEW
-app.use('/api/bookings', bookingRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/certificates', certificateRoutes);
+app.use('/auth', authRoutes);
+app.use('/farmers', farmerRoutes);
+app.use('/customers', customerRoutes);
+app.use('/bookings', bookingRoutes);
+app.use('/products', productRoutes);
+app.use('/orders', orderRoutes);
+app.use('/admin', adminRoutes);
+app.use('/certificates', certificateRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {
