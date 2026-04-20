@@ -74,9 +74,9 @@ router.get('/dashboard', authenticate, authorize('customer'), async (req, res, n
       where: {
         customer_id: customer.customer_id,
         status: { [Op.in]: ['confirmed', 'shipped'] },
-        expected_delivery: { [Op.gte]: new Date() },
+        estimated_delivery: { [Op.gte]: new Date() },
       },
-      order: [['expected_delivery', 'ASC']],
+      order: [['estimated_delivery', 'ASC']],
     });
 
     // Monthly CO₂ chart — last 6 months
@@ -113,7 +113,7 @@ router.get('/dashboard', authenticate, authorize('customer'), async (req, res, n
         total_spent: totalSpent,
         co2_saved_kg: co2Saved,
         paddy_diverted_kg: totalKg,
-        next_delivery_date: nextOrder?.expected_delivery || null,
+        next_delivery_date: nextOrder?.estimated_delivery || null,
         recent_orders: recentOrders,
         co2_chart: co2Chart,
       },

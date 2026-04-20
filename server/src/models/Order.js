@@ -7,6 +7,7 @@ const Order = sequelize.define('Order', {
   order_date: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   status: { type: DataTypes.ENUM('pending', 'confirmed', 'manufacturing', 'shipped', 'delivered', 'cancelled'), defaultValue: 'pending' },
   items: { type: DataTypes.JSONB, allowNull: false, defaultValue: [] },
+  total_quantity_kg: { type: DataTypes.FLOAT, defaultValue: 0 },
   total_amount: { type: DataTypes.FLOAT, allowNull: false },
   discount: { type: DataTypes.FLOAT, defaultValue: 0 },
   gst: { type: DataTypes.FLOAT, defaultValue: 0 },

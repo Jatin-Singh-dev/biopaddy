@@ -15,12 +15,17 @@ router.post('/', authenticate, authorize('customer'), async (req, res, next) => 
 
     // Calculate amounts
     let total_amount = 0;
+    let total_quantity_kg = 0;
     const processedItems = [];
     for (const item of items) {
       const product = await Product.findByPk(item.product_id);
       if (!product) return res.status(400).json({ success: false, message: `Product ${item.product_id} not found` });
       const lineTotal = product.unit_price_rupees * item.quantity;
       total_amount += lineTotal;
+      
+      // Rough estimate: 5kg per 100 units (modify based on actual product weights if available)
+      total_quantity_kg += (item.quantity * 0.05);
+      
       processedItems.push({ product_id: product.product_id, name: product.product_name, quantity: item.quantity, unit_price: product.unit_price_rupees, total: lineTotal });
     }
 
@@ -28,7 +33,7 @@ router.post('/', authenticate, authorize('customer'), async (req, res, next) => 
     const gst = (total_amount - discount) * 0.18;
     const final_amount = total_amount - discount + gst;
 
-    const order = await Order.create({ customer_id: customer.customer_id, items: processedItems, total_amount, discount, gst, final_amount, shipping_address, payment_method: payment_method || 'razorpay', estimated_delivery: new Date(Date.now() + 14 * 86400000) });
+    const order = await Order.create({ customer_id: customer.customer_id, items: processedItems, total_quantity_kg, total_amount, discount, gst, final_amount, shipping_address, payment_method: payment_method || 'razorpay', estimated_delivery: new Date(Date.now() + 14 * 86400000) });
 
     // Update customer stats
     await customer.update({ total_orders: customer.total_orders + 1, total_spent: customer.total_spent + final_amount });
