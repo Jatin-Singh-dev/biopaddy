@@ -32,7 +32,7 @@ npm run dev            # → http://localhost:5000
 | Role | Login |
 |------|-------|
 | Admin | admin@biopaddy.com |
-| Farmer | +919876543210 |
+| Farmer | +91xxxxxxxx |
 | Customer | greenplate@corp.com |
 
 ## Project Structure
